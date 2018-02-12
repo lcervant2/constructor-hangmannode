@@ -1,4 +1,4 @@
-# constructor-hangmannode
+# Constructor-Hangmannode
 
 # **Instructions**
 
