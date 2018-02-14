@@ -12,45 +12,62 @@
 // actions methods
 // isGuessed methos that returns guessed
 // if (secret word.isGuessed) {
-// 	gameover}
+// gameover}
 
-const letter = require('./letter.js');
+const Letter = require('./letter.js');
 
 function Word(target) {
-	this.letterBucket = target.split('');
-	this.progress = target.split('').map(() => '_')
-	this.target = target;
-	this.charsFound = 0;
-	this.charsLength = target.split('').length
+console.log(target)
+this.letterBucket = []
+this.initiate = function(){
+for(var i = 0; i < target.length; i++){
+this.letterBucket.push(new Letter(target.charAt(i)))
+}
+}
+this.initiate()
 
-	const getLetterIndex = function(letter) {
-		return this.letterBucket.indexOf(letter)
-	}
+this.progress = target.split('').map(() => '_')
+this.target = target;
+this.charsFound = 0;
+this.charsLength = target.length
 
-	this.updateProgress = function(letterIndex, guessedChar) {
-		this.progress = this.progress.map((char, i) => (letterIndex === i) ? guessedChar : char)
-	}
+const getLetterIndex = function(letter) {
+return this.letterBucket.indexOf(letter)
+}
 
-	this.checkLetter = function(guessedLetter) {
-		const letterIndex = this.letterBucket.indexOf(guessedLetter)
+this.updateProgress = function(guessedChar) {
+this.progress = this.letterBucket.map((char, i) =>{
+return char.appear ? char.charac : "_"
+})
+}
+//calls the guess function
+this.checkLetter = function(guessedLetter) {
+for(var n = 0; n < this.letterBucket.length; n++){
+this.letterBucket[n].checkerFunc(guessedLetter)
+}
+this.supperCoolCheckerLetter(guessedLetter)
+}
+//returns string
+this.supperCoolCheckerLetter = function(guessedLetter) {
+//const letterIndex = this.letterBucket.indexOf(guessedLetter)
+for(let z = 0; z < this.letterBucket.length; z++){
+var output = this.letterBucket[z].returnUnderlying()
+if(output != '_'){
 
-		if (letterIndex !== -1) {
-			this.letterBucket = this.letterBucket.map((char, i) => (letterIndex === i) ? '_' :  char)
-			this.charsFound = this.charsFound  + 1
-			this.updateProgress(letterIndex, guessedLetter)
-			return true
-		} else {
-			return false
-		}
-	}
+this.charsFound = this.charsFound  + 1
+this.updateProgress(guessedLetter)
+}
+}
+}
+this.getProgress = function() {
+return this.progress.join('')
+}
 
-	this.getProgress = function() {
-		return this.progress.join('')
-	}
-
-	this.getRemainingLettersCount = function() {
-		return this.charsLength - this.charsFound
-	}
+this.getRemainingLettersCount = function() {
+return this.charsLength - this.charsFound
+}
 }
 
 module.exports = Word;
+
+
